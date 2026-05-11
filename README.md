@@ -26,6 +26,13 @@ A proposta inicial era criar uma calculadora simples em Python, mas o projeto fo
 
 Praticar lógica de programação usando entrada de dados, conversão de tipos, condicionais, funções, tratamento de erros e estruturação básica de uma aplicação web.
 
+## Atualizações
+
+- Correção da operação de multiplicação
+- Melhoria no tratamento de texto das operações
+- Normalização de acentos para evitar erros entre HTML e Python
+- Validação de entradas numéricas
+
 ## Como executar
 
 Instale o Flask:
