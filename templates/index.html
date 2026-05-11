@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark 01 - Calculadora Inteligente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="container">
+        <div class="card">
+            <p class="tag">Projeto prático</p>
+            <h1>Calculadora Inteligente</h1>
+            <p class="subtitulo">
+                Projeto em Python com HTML, CSS e JavaScript para melhorar a visualização.<br>
+            </p>
+
+            <form method="POST" id="formCalculadora">
+                <div class="campo">
+                    <label for="numero1">Primeiro número</label>
+                    <input type="text" id="numero1" name="numero1" value="{{ numero1 }}" placeholder="Ex: 10"></input>
+                </div>
+
+                <div class="campo">
+                    <label for="numero2">Secundo número</label>
+                    <input type="text" id="numero2" name="numero2" value="{{ numero2 }}" placeholder="Ex: 5"></input>
+                </div>
+
+                <div class="campo">
+                    <label for="operacao">Operação</label>
+
+                    <select id="operacao" name="operacao">
+                        <option value="soma" {% if operacao == "soma" %}selected{% endif %}>
+                            Soma</option>
+
+                        <option value="subtracao" {% if operacao == "subtracao" %}selected{% endif %}>
+                            Subtração</option>
+
+                        <option value="multiplicao" {% if operacao == "multiplicao" %}selected{% endif %}>
+                            Multiplição</option>
+                            
+                        <option value="divisao" {% if operacao == "divisao" %}selected{% endif %}>
+                            Divisão</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="botao">Calcular</button>
+            </form>
+
+            {% if erro %}
+                <div class="alerta erro">
+                    {{ erro }}
+                </div>
+            {% endif %}
+
+            {% if resultado is not none %}
+                <div class="resultado">
+                    <h2>Resultado </h2>
+                    <p><strong>Operação: </strong>{{ nome_operacao }}</p>
+                    <p><strong>Resultado: </strong>{{ resultado }}</p>
+                    <p><strong>Situação: </strong>{{ resultado }}</p>
+                    <p><strong>Tipo: </strong>{{ tipo }}</p>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
