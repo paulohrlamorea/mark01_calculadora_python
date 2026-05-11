@@ -1,6 +1,21 @@
+import unicodedata
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
+
+def normalizar_texto(texto):
+    if texto is None:
+        return ""
+    
+    texto = texto.lower().strip()
+
+    texto = unicodedata.normalize("NFD", texto)
+    texto = "".join(
+        letra for letra in texto
+        if unicodedata.category(letra) != "Mn"
+    )
+
+    return texto
 
 def converter_numero(valor):
     valor = valor.strip().replace(",",".")
@@ -11,13 +26,18 @@ def converter_numero(valor):
     return float(valor)
 
 def calcular(numero1, numero2, operacao):
+    operacao = operacao.lower().strip()
+    operacao = operacao.replace("ç", "c").replace("ã", "a")
+    
+    print("Operação tratada dentro da função:", operacao)
+
     if operacao == "soma":
         return numero1 + numero2, "Soma"
     
     elif operacao == "subtracao":
         return numero1 - numero2, "Subtração"
     
-    elif operacao == "multiplicacao":
+    elif operacao.startswith("multiplic"):
         return numero1 * numero2, "Multiplicação"
     
     elif operacao == "divisao":
@@ -26,7 +46,7 @@ def calcular(numero1, numero2, operacao):
         return numero1 / numero2, "Divisão"
     
     else:
-        raise ValueError("Operação inválida.")
+        raise ValueError(f"Operação inválida recebida: {operacao}")
     
 
 def gerar_informacoes(resultado):
@@ -61,11 +81,8 @@ def index():
         numero1 = request.form.get("numero1", "")
         numero2 = request.form.get("numero2", "")
         operacao = request.form.get("operacao", "soma")
-        operacao = request.form.get("operacao", "soma")
-        operacao = operacao.lower().strip()
-        operacao = operacao.replace("ç", "c").replace("ã", "a")
-        print("Operação recebida: ", operacao)
-
+        
+        print("Operação recebida do HTML: ", operacao)
 
         try:
             n1 = converter_numero(numero1)
@@ -74,7 +91,7 @@ def index():
             resultado, nome_operacao = calcular(n1, n2, operacao)
             situacao, tipo = gerar_informacoes(resultado)
 
-            print(f"Operação: {nome_operacao} | {n1} e {2} = {resultado}")
+            print(f"Operação: {nome_operacao} | {n1} e {n2} = {resultado}")
 
         except ValueError as e:
             erro = str(e)
